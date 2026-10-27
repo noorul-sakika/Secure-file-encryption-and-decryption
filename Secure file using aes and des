@@ -1,0 +1,21 @@
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+
+# Generate AES key
+key = get_random_bytes(16)
+
+# Original message
+message = b"Hello World"
+
+# Encryption
+cipher = AES.new(key, AES.MODE_EAX)
+ciphertext, tag = cipher.encrypt_and_digest(message)
+
+print("Original Message:", message.decode())
+print("Encrypted Message:", ciphertext.hex())
+
+# Decryption
+cipher = AES.new(key, AES.MODE_EAX, nonce=cipher.nonce)
+decrypted = cipher.decrypt_and_verify(ciphertext, tag)
+
+print("Decrypted Message:", decrypted.decode())
